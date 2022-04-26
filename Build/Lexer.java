@@ -4,6 +4,8 @@ import java.util.*;
 
 public class Lexer {
     public static ArrayList<Token> lex(String input){
+        input = input.toLowerCase();
+
         if(input.length() == 0){
             return null;
         }
@@ -95,10 +97,14 @@ public class Lexer {
                         index++;
                         if(index < input.length() && input.charAt(index) == 'n'){
                             tokenList.add(new Token("sin",Ops.SIN));
+                            index++;
                         }
                         else{
                             return null;
                         }
+                    }
+                    else{
+                        return null;
                     }
                 }
                 case 'c' -> {
@@ -107,10 +113,14 @@ public class Lexer {
                         index++;
                         if(index < input.length() && input.charAt(index) == 's'){
                             tokenList.add(new Token("cos",Ops.COS));
+                            index++;
                         }
                         else{
                             return null;
                         }
+                    }
+                    else{
+                        return null;
                     }
                 }
                 case 't' -> {
@@ -119,17 +129,33 @@ public class Lexer {
                         index++;
                         if(index < input.length() && input.charAt(index) == 'n'){
                             tokenList.add(new Token("tan",Ops.TAN));
+                            index++;
                         }
                         else{
                             return null;
                         }
                     }
+                    else{
+                        return null;
+                    }
+                }
+                case 'p' -> {
+                    index++;
+                    if(index < input.length() && input.charAt(index) == 'i'){
+                        tokenList.add(new Token("pi",Ops.PI));
+                        index++;
+                    }
+                    else
+                        return null;
                 }
                 case ' ' -> {index ++;}
                 default -> {return null;}
             }
         }
 
+        if(tokenList.size() == 0)
+            return null;
+            
         return tokenList;
     }
 }
