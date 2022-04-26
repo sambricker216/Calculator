@@ -66,7 +66,7 @@ public class Lexer {
 
                         text += input.charAt(index);
                         index++;
-                    }while(index < input.length() && input.charAt(index) >= 48 && input.charAt(index) <= 57);
+                    }while(index < input.length() && ((input.charAt(index) >= 48 && input.charAt(index) <= 57) ||  input.charAt(index) == 46));
 
                     tokenList.add(new Token(text, Ops.NUM));
                 }
@@ -125,6 +125,8 @@ public class Lexer {
                         }
                     }
                 }
+                case ' ' -> {index ++;}
+                default -> {return null;}
             }
         }
 
