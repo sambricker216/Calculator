@@ -47,6 +47,10 @@ public class Lexer {
                     tokenList.add(new Token("(", Ops.LP));
                     index++;
                 }
+                case '|' -> {
+                    tokenList.add(new Token("|", Ops.ABS));
+                    index++;
+                }
                 case ')' -> {
                     tokenList.add(new Token(")", Ops.RP));
                     index++;

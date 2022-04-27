@@ -140,6 +140,14 @@ public class LexerTest {
     }
 
     @Test
+    public void TestABS(){
+        ArrayList<Token> tokens = Lexer.lex("|");
+        assertEquals(tokens.size(), 1);
+        assertEquals(tokens.get(0).getOp(), Ops.ABS);
+        assertEquals(tokens.get(0).getText(), "|");
+    }
+
+    @Test
     public void TestLOG(){
         ArrayList<Token> tokens = Lexer.lex("log");
         assertEquals(tokens.size(), 1);
