@@ -328,4 +328,10 @@ public class LexerTest {
         assertEquals(tokens.get(18).getText(), "3.42");
 
     }
+
+    @Test
+    public void ErrorTest14(){
+        ArrayList<Token> tokens = Lexer.lex("                                                    ");
+        assertEquals(tokens, null);
+    }
 }
