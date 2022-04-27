@@ -294,4 +294,38 @@ public class LexerTest {
         ArrayList<Token> tokens = Lexer.lex("ta ");
         assertEquals(tokens, null);
     }
+
+    @Test
+    public void ErrorTest13(){
+        ArrayList<Token> tokens = Lexer.lex("cosin");
+        assertEquals(tokens, null);
+    }
+
+    @Test
+    public void TestEverything(){
+        ArrayList<Token> tokens = Lexer.lex("12+-cossinlogln   %*/x^ _)( tan pie 3.42");
+        assertEquals(tokens.size(), 19);
+        assertEquals(tokens.get(0).getOp(), Ops.NUM);
+        assertEquals(tokens.get(0).getText(), "12");
+        assertEquals(tokens.get(1).getOp(), Ops.ADD);
+        assertEquals(tokens.get(2).getOp(), Ops.SUB);
+        assertEquals(tokens.get(3).getOp(), Ops.COS);
+        assertEquals(tokens.get(4).getOp(), Ops.SIN);
+        assertEquals(tokens.get(5).getOp(), Ops.LOG);
+        assertEquals(tokens.get(6).getOp(), Ops.LN);
+        assertEquals(tokens.get(7).getOp(), Ops.MOD);
+        assertEquals(tokens.get(8).getOp(), Ops.MULT);
+        assertEquals(tokens.get(9).getOp(), Ops.DIV);
+        assertEquals(tokens.get(10).getOp(), Ops.VAR);
+        assertEquals(tokens.get(11).getOp(), Ops.POW);
+        assertEquals(tokens.get(12).getOp(), Ops.BASE);
+        assertEquals(tokens.get(13).getOp(), Ops.RP);
+        assertEquals(tokens.get(14).getOp(), Ops.LP);
+        assertEquals(tokens.get(15).getOp(), Ops.TAN);
+        assertEquals(tokens.get(16).getOp(), Ops.PI);
+        assertEquals(tokens.get(17).getOp(), Ops.E);
+        assertEquals(tokens.get(18).getOp(), Ops.NUM);
+        assertEquals(tokens.get(18).getText(), "3.42");
+
+    }
 }
