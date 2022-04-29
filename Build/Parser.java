@@ -15,70 +15,146 @@ public class Parser {
     }
 
     private Expr abs(){
-        if(index >= tokenList.size())
-            return null;
-        else if(tokenList.get(index).getOp() == Ops.ABS){
-            index++;
-            Expr absExpr = add();
-            if(index >= tokenList.size() || tokenList.get(index).getOp() !=  Ops.ABS)
-                return null;
-            else{
-                index++;
-                return absExpr;
-            }
-        }
-        else
-            return add();
+        return add();
     }
 
     private Expr add(){
-        if(index >= tokenList.size())
-            return null;
-
-        Expr left = mult();
-        Expr right = null;
-
-        while(index <= tokenList.size() && (tokenList.get(index).getOp() == Ops.ADD || tokenList.get(index).getOp() == Ops.ADD)){
-            index++;
-            right = mult();
-            left = new BinExpr(left, right, tokenList.get(index).getOp());
-        }
-
-        if(right != null){
-            return new BinExpr(left, right, tokenList.get(index).getOp());
-        }
-        else{
-            return left;
-        }
+       return mult();
 
     }
 
     private Expr mult(){
-        if(index >= tokenList.size())
-            return null;
-
-        Expr left = base();
-        Expr right = null;
-
-        while(index <= tokenList.size() && (tokenList.get(index).getOp() == Ops.MULT || tokenList.get(index).getOp() == Ops.DIV || tokenList.get(index).getOp() == Ops.MOD)){
-            index++;
-            right = base();
-            left = new BinExpr(left, right, tokenList.get(index).getOp());
-        }
-
-        if(right != null){
-            return new BinExpr(left, right, tokenList.get(index).getOp());
-        }
-        else{
-            return left;
-        }
+        return base();
     }
 
     private Expr base(){
-        return null;
+        if(index >= tokenList.size()){
+            return null;
+        }
+
+        switch(tokenList.get(index).getOp()){
+            case NUM -> {
+                return new ConstExpr(Float.parseFloat(tokenList.get(index).getText()));
+            }
+            case PI -> {
+                return new ConstExpr((float)(Math.PI));
+            }
+            case E ->{
+                return new ConstExpr((float)(Math.E));
+            }
+            case LOG, LN, SIN, COS, TAN ->{
+                return type();
+            }
+            case LP ->{
+                index++;
+
+            }
+            default -> {
+                return null;
+            }
+        }
+
+        return type();
     }
 
     private Expr type(){
-        return null;
+        if(index >= tokenList.size()){
+            return null;
+        }
+
+        if(tokenList.get(index).getOp() == Ops.LOG){
+            index++;
+
+            if(index >= tokenList.size()){
+                return null;
+            }
+
+            if(tokenList.get(index).getOp() == Ops.BASE){
+                index++;
+
+                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.LP){
+                    return null;
+                }
+
+                index++;
+
+                if(index >= tokenList.size()){
+                    return null;
+                }
+
+                Expr base = abs();
+
+                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
+                    return null;
+                }
+
+                index++;
+
+                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.LP){
+                    return null;
+                }
+
+                index++;
+
+                Expr val = abs();
+
+                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
+                    return null;
+                }
+
+                index++;
+
+                if(val == null || base == null){
+                    return null;
+                }
+
+                return new TypeExpr(Ops.LOG, val, base);
+            }
+            else{
+                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.LP){
+                    return null;
+                }
+
+                index++;
+
+                Expr val = abs();
+
+                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
+                    return null;
+                }
+
+                if(val == null){
+                    return null;
+                }
+
+                return new TypeExpr(Ops.LOG, val);
+            }
+        }
+    
+        else{
+            Ops op = tokenList.get(index).getOp();
+
+            index++;
+
+            if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.LP){
+                return null;
+            }
+
+            index++;
+
+            Expr val = abs();
+
+            if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
+                return null;
+            }
+
+            if(val == null){
+                return null;
+            }
+
+            index++;
+
+            return new TypeExpr(op, val);
+        }
     }
 }
