@@ -1,7 +1,7 @@
 package AST;
 import Build.*;
 
-public class ConstExpr {
+public class ConstExpr extends Expr{
     float val;
 
     public float getVal() {
@@ -15,5 +15,9 @@ public class ConstExpr {
 
     public Object visit(Visitor visitor){
         return null;
+    }
+
+    public ConstExpr(float val){
+        this.val = val;
     }
 }
