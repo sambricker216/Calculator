@@ -5,6 +5,7 @@ import java.util.*;
 public class Lexer {
     public static ArrayList<Token> lex(String input){
         input = input.toLowerCase();
+        int depth = 0;
 
         if(input.length() == 0){
             return null;
@@ -46,6 +47,7 @@ public class Lexer {
                 case '(' -> {
                     tokenList.add(new Token("(", Ops.LP));
                     index++;
+                    depth++;
                 }
                 case '|' -> {
                     tokenList.add(new Token("|", Ops.ABS));
@@ -54,6 +56,7 @@ public class Lexer {
                 case ')' -> {
                     tokenList.add(new Token(")", Ops.RP));
                     index++;
+                    depth--;
                 }
                 case 'x' -> {
                     tokenList.add(new Token("x", Ops.VAR));
@@ -157,7 +160,7 @@ public class Lexer {
             }
         }
 
-        if(tokenList.size() == 0)
+        if(tokenList.size() == 0 || depth != 0)
             return null;
             
         return tokenList;

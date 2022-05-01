@@ -86,14 +86,23 @@ public class ParserTest {
         assertEquals(null, e.getBase());
         assertEquals((float)Math.PI, ((ConstExpr)(e.getVal())).getVal() );
     }
+    
 
     @Test
-    public void TestParenError1(){
-        ArrayList<Token> tokens = Lexer.lex("(PI");
+    public void TestParen3(){
+        ArrayList<Token> tokens = Lexer.lex("cos()");
         Parser p = new Parser(tokens);
-        ConstExpr e = (ConstExpr)(p.getExpr());
+        TypeExpr e = (TypeExpr)(p.getExpr());
 
-        assertEquals(e, null);
+        assertEquals(null, e);
     }
-    
+
+    @Test
+    public void TestParen4(){
+        ArrayList<Token> tokens = Lexer.lex("()");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+
+        assertEquals(null, e);
+    }
 }

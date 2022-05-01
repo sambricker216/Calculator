@@ -107,21 +107,21 @@ public class LexerTest {
         assertEquals(tokens.get(0).getText(), "_");
     }
 
-    @Test
-    public void TestLP(){
-        ArrayList<Token> tokens = Lexer.lex("(");
-        assertEquals(tokens.size(), 1);
-        assertEquals(tokens.get(0).getOp(), Ops.LP);
-        assertEquals(tokens.get(0).getText(), "(");
-    }
+    // @Test
+    // public void TestLP(){
+    //     ArrayList<Token> tokens = Lexer.lex("(");
+    //     assertEquals(tokens.size(), 1);
+    //     assertEquals(tokens.get(0).getOp(), Ops.LP);
+    //     assertEquals(tokens.get(0).getText(), "(");
+    // }
 
-    @Test
-    public void TestRP(){
-        ArrayList<Token> tokens = Lexer.lex(")");
-        assertEquals(tokens.size(), 1);
-        assertEquals(tokens.get(0).getOp(), Ops.RP);
-        assertEquals(tokens.get(0).getText(), ")");
-    }
+    // @Test
+    // public void TestRP(){
+    //     ArrayList<Token> tokens = Lexer.lex(")");
+    //     assertEquals(tokens.size(), 1);
+    //     assertEquals(tokens.get(0).getOp(), Ops.RP);
+    //     assertEquals(tokens.get(0).getText(), ")");
+    // }
 
     @Test
     public void TestPI(){

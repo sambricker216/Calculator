@@ -102,6 +102,9 @@ public class Parser {
 
                 Expr base = abs();
 
+                if(base == null)
+                    return null;
+
                 if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
                     return null;
                 }
@@ -116,15 +119,14 @@ public class Parser {
 
                 Expr val = abs();
 
+                if(val == null)
+                    return null;
+
                 if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
                     return null;
                 }
 
                 index++;
-
-                if(val == null || base == null){
-                    return null;
-                }
 
                 return new TypeExpr(Ops.LOG, val, base);
             }
@@ -137,11 +139,11 @@ public class Parser {
 
                 Expr val = abs();
 
-                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
+                if(val == null){
                     return null;
                 }
 
-                if(val == null){
+                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
                     return null;
                 }
 
@@ -162,11 +164,11 @@ public class Parser {
 
             Expr val = abs();
 
-            if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
+            if(val == null){
                 return null;
             }
 
-            if(val == null){
+            if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
                 return null;
             }
 
