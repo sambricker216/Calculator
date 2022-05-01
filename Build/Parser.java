@@ -38,13 +38,19 @@ public class Parser {
 
         switch(tokenList.get(index).getOp()){
             case NUM -> {
-                return new ConstExpr(Float.parseFloat(tokenList.get(index).getText()));
+                ConstExpr c = new ConstExpr(Float.parseFloat(tokenList.get(index).getText()));
+                index++;
+                return c;
             }
             case PI -> {
-                return new ConstExpr((float)(Math.PI));
+                ConstExpr c = new ConstExpr((float)(Math.PI));
+                index++;
+                return c;
             }
             case E ->{
-                return new ConstExpr((float)(Math.E));
+                ConstExpr c = new ConstExpr((float)(Math.E));
+                index++;
+                return c;
             }
             case LOG, LN, SIN, COS, TAN ->{
                 return type();

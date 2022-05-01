@@ -44,4 +44,56 @@ public class ParserTest {
         assertEquals(null, e.getBase());
         assertEquals((float)Math.PI, ((ConstExpr)(e.getVal())).getVal() );
     }
+
+    @Test
+    public void TestCos(){
+        ArrayList<Token> tokens = Lexer.lex("cos(pi)");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+
+        assertEquals(Ops.COS, e.getOp());
+        assertEquals(null, e.getBase());
+        assertEquals((float)Math.PI, ((ConstExpr)(e.getVal())).getVal() );
+    }
+
+    @Test
+    public void TestTan(){
+        ArrayList<Token> tokens = Lexer.lex("taN(pi)");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+
+        assertEquals(Ops.TAN, e.getOp());
+        assertEquals(null, e.getBase());
+        assertEquals((float)Math.PI, ((ConstExpr)(e.getVal())).getVal() );
+    }
+
+    @Test
+    public void TestParen(){
+        ArrayList<Token> tokens = Lexer.lex("((1776))");
+        Parser p = new Parser(tokens);
+        ConstExpr e = (ConstExpr)(p.getExpr());
+
+        assertEquals(1776, e.getVal() );
+    }
+
+    @Test
+    public void TestParen2(){
+        ArrayList<Token> tokens = Lexer.lex("(cos((PI)))");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+
+        assertEquals(Ops.COS, e.getOp());
+        assertEquals(null, e.getBase());
+        assertEquals((float)Math.PI, ((ConstExpr)(e.getVal())).getVal() );
+    }
+
+    @Test
+    public void TestParenError1(){
+        ArrayList<Token> tokens = Lexer.lex("(PI");
+        Parser p = new Parser(tokens);
+        ConstExpr e = (ConstExpr)(p.getExpr());
+
+        assertEquals(e, null);
+    }
+    
 }
