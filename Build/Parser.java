@@ -7,6 +7,10 @@ public class Parser {
     ArrayList<Token> tokenList;
     int index;
 
+    public Expr getExpr() {
+        return e;
+    }
+
     public Parser(ArrayList<Token> t){
         tokenList = t;
         index = 0;
@@ -48,13 +52,21 @@ public class Parser {
             case LP ->{
                 index++;
 
+                Expr e = abs();
+
+                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
+                    return null;
+                }
+
+                index++;
+
+                return e;
+
             }
             default -> {
                 return null;
             }
         }
-
-        return type();
     }
 
     private Expr type(){
