@@ -18,6 +18,6 @@ public class ConstExpr extends Expr{
     }
 
     public ConstExpr(float val){
-        this.val = val;
+        this.val = (float)val;
     }
 }

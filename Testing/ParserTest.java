@@ -105,4 +105,53 @@ public class ParserTest {
 
         assertEquals(null, e);
     }
+
+    @Test
+    public void TestLog(){
+        ArrayList<Token> tokens = Lexer.lex("log()");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+
+        assertEquals(null, e);
+    }
+
+    @Test
+    public void TestLog1(){
+        ArrayList<Token> tokens = Lexer.lex("log(e)");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+
+        assertEquals(Ops.LOG, e.getOp());
+        assertEquals((float)(Math.E), ((ConstExpr)(e.getVal())).getVal() );
+        assertEquals(e.getBase(), null);
+    }
+
+    @Test
+    public void TestLog2(){
+        ArrayList<Token> tokens = Lexer.lex("log(log(e))");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)p.getExpr();
+        TypeExpr e1 = (TypeExpr)e.getVal();
+
+        assertEquals(Ops.LOG, e.getOp());
+        assertEquals(Ops.LOG, e1.getOp());
+        assertEquals(e.getBase(), null);
+        assertEquals(e1.getBase(), null);
+        assertEquals((float)(Math.E), ((ConstExpr)(e1.getVal())).getVal() );
+    }
+
+    @Test
+    public void TestLog4(){
+        ArrayList<Token> tokens = Lexer.lex("log_(3)(27)");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+
+        assertEquals(Ops.LOG, e.getOp());
+
+        ConstExpr c1 = (ConstExpr) e.getBase();
+        ConstExpr c2 = (ConstExpr) e.getVal();
+
+        assertEquals(3, c1.getVal());
+        assertEquals(27, c2.getVal());
+    }
 }

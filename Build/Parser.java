@@ -16,6 +16,9 @@ public class Parser {
         index = 0;
 
         e = abs();
+
+        if(index < tokenList.size() - 1)
+            e = null;
     }
 
     private Expr abs(){
