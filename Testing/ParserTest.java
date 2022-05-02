@@ -270,4 +270,81 @@ public class ParserTest {
         assertEquals(3, ((ConstExpr)(b.getLeft())).getVal()  );
         assertEquals((float) Math.E, ((ConstExpr)(b.getRight())).getVal()  );
     }
+
+    @Test
+    public void TestNeg(){
+        ArrayList<Token> tokens = Lexer.lex("-(4)");
+        Parser p = new Parser(tokens);
+        TypeExpr root = (TypeExpr) p.getExpr();
+
+        assertEquals(Ops.SUB, root.getOp());
+        assertEquals(4, ((ConstExpr)(root.getVal())).getVal()  );
+    }
+
+    @Test
+    public void TestAdd1(){
+        ArrayList<Token> tokens = Lexer.lex("3 + log(pi)");
+        Parser p = new Parser(tokens);
+        BinExpr e = (BinExpr) p.getExpr();
+
+        assertEquals(Ops.ADD, e.getOp());
+
+        ConstExpr left = (ConstExpr) e.getLeft();
+        TypeExpr right = (TypeExpr) e.getRight();
+
+        assertEquals(3, left.getVal());
+        assertEquals(Ops.LOG, right.getOp());
+        assertEquals((float) Math.PI, ((ConstExpr)(right.getVal())).getVal() );
+    }
+
+    @Test
+    public void TestSub1(){
+        ArrayList<Token> tokens = Lexer.lex("3 - log(pi)");
+        Parser p = new Parser(tokens);
+        BinExpr e = (BinExpr) p.getExpr();
+
+        assertEquals(Ops.SUB, e.getOp());
+
+        ConstExpr left = (ConstExpr) e.getLeft();
+        TypeExpr right = (TypeExpr) e.getRight();
+
+        assertEquals(3, left.getVal());
+        assertEquals(Ops.LOG, right.getOp());
+        assertEquals((float) Math.PI, ((ConstExpr)(right.getVal())).getVal() );
+    }
+
+    @Test
+    public void TestAddMult(){
+        ArrayList<Token> tokens = Lexer.lex("5 * 4 - 6 % 7");
+        Parser p = new Parser(tokens);
+        BinExpr root = (BinExpr) p.getExpr();
+        assertEquals(Ops.SUB, root.getOp());
+
+        BinExpr left = (BinExpr) root.getLeft();
+        BinExpr right = (BinExpr) root.getRight();
+
+        assertEquals(Ops.MULT, left.getOp());
+        assertEquals(Ops.MOD, right.getOp());
+
+        assertEquals(5, ((ConstExpr)(left.getLeft())).getVal() );
+        assertEquals(4, ((ConstExpr)(left.getRight())).getVal() );
+        assertEquals(6, ((ConstExpr)(right.getLeft())).getVal() );
+        assertEquals(7, ((ConstExpr)(right.getRight())).getVal() );
+    }
+
+    @Test
+    public void TestNeg1(){
+        ArrayList<Token> tokens = Lexer.lex("5+-()");
+        Parser p = new Parser(tokens);
+        TypeExpr root = (TypeExpr) p.getExpr();
+        assertEquals(null, root);
+    }
+
+    @Test
+    public void TestNeg2(){
+        ArrayList<Token> tokens = Lexer.lex("5+-(4)");
+        Parser p = new Parser(tokens);
+        BinExpr root = (BinExpr) p.getExpr();
+        assertEquals(Ops.ADD, root.getOp());
+    }
 }

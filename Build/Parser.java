@@ -27,12 +27,41 @@ public class Parser {
     }
 
     private Expr abs(){
+        if(tokenList.get(index).getOp() == Ops.ABS){
+            AbsExpr e = new AbsExpr(add());
+
+            if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.ABS){
+                return null;
+            }
+
+            index++;
+
+            return e;
+        }
+
         return add();
     }
 
     private Expr add(){
-       return mult();
+        Expr left = mult();
 
+        if(left == null){
+            return null;
+        }
+
+        Expr right;
+
+        while(index < tokenList.size() && (tokenList.get(index).getOp() == Ops.ADD || tokenList.get(index).getOp() == Ops.SUB)){
+            Ops op = tokenList.get(index).getOp();
+            index++;
+            right = mult();
+            if(right == null){
+                return null;
+            }
+            left = new BinExpr(left, right, op);
+        }
+
+        return left;
     }
 
     private Expr mult(){
@@ -78,7 +107,7 @@ public class Parser {
                 index++;
                 return c;
             }
-            case LOG, LN, SIN, COS, TAN ->{
+            case LOG, LN, SIN, COS, TAN, SUB ->{
                 return type();
             }
             case LP ->{
