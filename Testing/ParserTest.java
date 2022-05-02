@@ -107,6 +107,15 @@ public class ParserTest {
     }
 
     @Test
+    public void TestParen5(){
+        ArrayList<Token> tokens = Lexer.lex(")(");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+
+        assertEquals(null, e);
+    }
+
+    @Test
     public void TestLog(){
         ArrayList<Token> tokens = Lexer.lex("log()");
         Parser p = new Parser(tokens);
@@ -153,5 +162,112 @@ public class ParserTest {
 
         assertEquals(3, c1.getVal());
         assertEquals(27, c2.getVal());
+    }
+
+
+    @Test
+    public void TestMult1(){
+        ArrayList<Token> tokens = Lexer.lex("3 * log(pi)");
+        Parser p = new Parser(tokens);
+        BinExpr e = (BinExpr) p.getExpr();
+
+        assertEquals(Ops.MULT, e.getOp());
+
+        ConstExpr left = (ConstExpr) e.getLeft();
+        TypeExpr right = (TypeExpr) e.getRight();
+
+        assertEquals(3, left.getVal());
+        assertEquals(Ops.LOG, right.getOp());
+        assertEquals((float) Math.PI, ((ConstExpr)(right.getVal())).getVal() );
+    }
+
+    @Test
+    public void TestDiv1(){
+        ArrayList<Token> tokens = Lexer.lex("ln(e) / 2");
+        Parser p = new Parser(tokens);
+        BinExpr e = (BinExpr) p.getExpr();
+
+        TypeExpr left = (TypeExpr) e.getLeft();
+        ConstExpr right = (ConstExpr) e.getRight();
+
+        assertEquals(Ops.DIV, e.getOp());
+        assertEquals(Ops.LN, left.getOp());
+        assertEquals((float) Math.E, ((ConstExpr)left.getVal()).getVal() );
+        assertEquals(2, right.getVal());
+    }
+
+    @Test
+    public void TestLoopMult(){
+        ArrayList<Token> tokens = Lexer.lex("6 * 5 / 4");
+        Parser p = new Parser(tokens);
+        BinExpr root = (BinExpr) p.getExpr();
+
+        assertEquals(root.getOp(), Ops.DIV);
+
+        BinExpr left = (BinExpr) root.getLeft();
+        ConstExpr right = (ConstExpr) root.getRight();
+
+        assertEquals(Ops.MULT, left.getOp());
+        assertEquals(6, ((ConstExpr)(left.getLeft())).getVal());
+        assertEquals(5, ((ConstExpr)(left.getRight())).getVal());
+        assertEquals(4, right.getVal());
+    }
+
+    @Test
+    public void TestMultError1(){
+        ArrayList<Token> tokens = Lexer.lex("* 3");
+        Parser p = new Parser(tokens);
+        BinExpr e = (BinExpr)(p.getExpr());
+
+        assertEquals(null, e);
+    }
+
+    @Test
+    public void TestMultError2(){
+        ArrayList<Token> tokens = Lexer.lex("6 %");
+        Parser p = new Parser(tokens);
+        BinExpr e = (BinExpr)(p.getExpr());
+
+        assertEquals(null, e);
+    }
+
+    @Test
+    public void TestMultError3(){
+        ArrayList<Token> tokens = Lexer.lex("4 * 3 /");
+        Parser p = new Parser(tokens);
+        BinExpr e = (BinExpr)(p.getExpr());
+
+        assertEquals(null, e);
+    }
+
+    @Test
+    public void TestMultError4(){
+        ArrayList<Token> tokens = Lexer.lex("*");
+        Parser p = new Parser(tokens);
+        BinExpr e = (BinExpr)(p.getExpr());
+
+        assertEquals(null, e);
+    }
+
+    @Test
+    public void TestMultError5(){
+        ArrayList<Token> tokens = Lexer.lex("log(3 *)");
+        Parser p = new Parser(tokens);
+        BinExpr e = (BinExpr)(p.getExpr());
+
+        assertEquals(null, e);
+    }
+
+    @Test
+    public void TestLogMult(){
+        ArrayList<Token> tokens = Lexer.lex("log(3 * e)");
+        Parser p = new Parser(tokens);
+        TypeExpr root = (TypeExpr) p.getExpr();
+
+        assertEquals(Ops.LOG, root.getOp());
+
+        BinExpr b = (BinExpr)  root.getVal();
+        assertEquals(3, ((ConstExpr)(b.getLeft())).getVal()  );
+        assertEquals((float) Math.E, ((ConstExpr)(b.getRight())).getVal()  );
     }
 }

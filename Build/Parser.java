@@ -11,6 +11,11 @@ public class Parser {
         return e;
     }
 
+    @Override
+    public String toString() {
+        return e.toString();
+    }
+
     public Parser(ArrayList<Token> t){
         tokenList = t;
         index = 0;
@@ -31,7 +36,25 @@ public class Parser {
     }
 
     private Expr mult(){
-        return base();
+        Expr left = base();
+
+        if(left == null){
+            return null;
+        }
+
+        Expr right;
+
+        while(index < tokenList.size() && (tokenList.get(index).getOp() == Ops.MULT || tokenList.get(index).getOp() == Ops.DIV || tokenList.get(index).getOp() == Ops.MOD)){
+            Ops op = tokenList.get(index).getOp();
+            index++;
+            right = base();
+            if(right == null){
+                return null;
+            }
+            left = new BinExpr(left, right, op);
+        }
+
+        return left;
     }
 
     private Expr base(){
@@ -149,6 +172,8 @@ public class Parser {
                 if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
                     return null;
                 }
+
+                index++;
 
                 return new TypeExpr(Ops.LOG, val);
             }
