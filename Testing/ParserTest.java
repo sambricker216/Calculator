@@ -347,4 +347,36 @@ public class ParserTest {
         BinExpr root = (BinExpr) p.getExpr();
         assertEquals(Ops.ADD, root.getOp());
     }
+
+    @Test
+    public void TestAbs(){
+        ArrayList<Token> tokens = Lexer.lex("|1+2|");
+        Parser p = new Parser(tokens);
+        AbsExpr root = (AbsExpr) p.getExpr();
+
+        BinExpr bin = (BinExpr) root.getExpr();
+        assertEquals(Ops.ADD, bin.getOp());
+    }
+
+    @Test
+    public void TestAbs1(){
+        ArrayList<Token> tokens = Lexer.lex("|1 + 2| + 3|");
+        Parser p = new Parser(tokens);
+        AbsExpr root = (AbsExpr) p.getExpr();
+        assertEquals(null, root);
+    }
+
+    @Test
+    public void TestAbs2(){
+        ArrayList<Token> tokens = Lexer.lex("||1 + 2| * 3|");
+        Parser p = new Parser(tokens);
+        AbsExpr root = (AbsExpr) p.getExpr();
+        BinExpr bin = (BinExpr) root.getExpr();
+
+        assertEquals(Ops.MULT, bin.getOp());
+
+        AbsExpr left = (AbsExpr) bin.getLeft();
+        BinExpr lBin = (BinExpr) left.getExpr();
+        assertEquals(Ops.ADD, lBin.getOp());
+    }
 }

@@ -20,26 +20,10 @@ public class Parser {
         tokenList = t;
         index = 0;
 
-        e = abs();
+        e = add();
 
-        if(index < tokenList.size() - 1)
+        if(index < tokenList.size() - 1 || (tokenList.get(tokenList.size() - 1).getOp() == Ops.ABS && !(e instanceof AbsExpr))  || tokenList.get(tokenList.size() - 1).getOp() == Ops.LP)
             e = null;
-    }
-
-    private Expr abs(){
-        if(tokenList.get(index).getOp() == Ops.ABS){
-            AbsExpr e = new AbsExpr(add());
-
-            if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.ABS){
-                return null;
-            }
-
-            index++;
-
-            return e;
-        }
-
-        return add();
     }
 
     private Expr add(){
@@ -113,7 +97,7 @@ public class Parser {
             case LP ->{
                 index++;
 
-                Expr e = abs();
+                Expr e = add();
 
                 if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.RP){
                     return null;
@@ -123,6 +107,19 @@ public class Parser {
 
                 return e;
 
+            }
+            case ABS ->{
+                index++;
+
+                Expr e = add();
+
+                if(index >= tokenList.size() || tokenList.get(index).getOp() != Ops.ABS){
+                    return null;
+                }
+
+                index++;
+
+                return new AbsExpr(e);
             }
             default -> {
                 return null;
@@ -155,7 +152,7 @@ public class Parser {
                     return null;
                 }
 
-                Expr base = abs();
+                Expr base = add();
 
                 if(base == null)
                     return null;
@@ -172,7 +169,7 @@ public class Parser {
 
                 index++;
 
-                Expr val = abs();
+                Expr val = add();
 
                 if(val == null)
                     return null;
@@ -192,7 +189,7 @@ public class Parser {
 
                 index++;
 
-                Expr val = abs();
+                Expr val = add();
 
                 if(val == null){
                     return null;
@@ -219,7 +216,7 @@ public class Parser {
 
             index++;
 
-            Expr val = abs();
+            Expr val = add();
 
             if(val == null){
                 return null;
