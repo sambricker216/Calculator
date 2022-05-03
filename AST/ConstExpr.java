@@ -14,7 +14,7 @@ public class ConstExpr extends Expr{
     }
 
     public Float visit(Visitor visitor){
-        return null;
+        return visitor.visitConstExpr(this);
     }
 
     public ConstExpr(float val){

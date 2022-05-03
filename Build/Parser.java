@@ -49,7 +49,7 @@ public class Parser {
     }
 
     private Expr mult(){
-        Expr left = base();
+        Expr left = pow();
 
         if(left == null){
             return null;
@@ -58,6 +58,28 @@ public class Parser {
         Expr right;
 
         while(index < tokenList.size() && (tokenList.get(index).getOp() == Ops.MULT || tokenList.get(index).getOp() == Ops.DIV || tokenList.get(index).getOp() == Ops.MOD)){
+            Ops op = tokenList.get(index).getOp();
+            index++;
+            right = pow();
+            if(right == null){
+                return null;
+            }
+            left = new BinExpr(left, right, op);
+        }
+
+        return left;
+    }
+
+    private Expr pow(){
+        Expr left = base();
+
+        if(left == null){
+            return null;
+        }
+
+        Expr right;
+
+        while(index < tokenList.size() && tokenList.get(index).getOp() == Ops.POW){
             Ops op = tokenList.get(index).getOp();
             index++;
             right = base();

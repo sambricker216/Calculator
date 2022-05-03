@@ -40,6 +40,6 @@ public class TypeExpr extends Expr{
     }
 
     public Float visit(Visitor visitor){
-        return null;
+        return visitor.visitTypeExpr(this);
     }
 }
