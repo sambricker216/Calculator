@@ -379,4 +379,49 @@ public class ParserTest {
         BinExpr lBin = (BinExpr) left.getExpr();
         assertEquals(Ops.ADD, lBin.getOp());
     }
+
+    @Test
+    public void TestAbs3(){
+        ArrayList<Token> tokens = Lexer.lex("||1 + 2| * |3");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+
+        assertEquals(null, e);
+    }
+
+    @Test
+    public void TestNegType1(){
+        ArrayList<Token> tokens = Lexer.lex("-4");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+        ConstExpr c = (ConstExpr) e.getVal();
+
+        assertEquals(4, c.getVal());
+    }
+
+    @Test
+    public void TestNegType2(){
+        ArrayList<Token> tokens = Lexer.lex("-sin(pi)");
+        Parser p = new Parser(tokens);
+        TypeExpr root = (TypeExpr)(p.getExpr());
+        TypeExpr sin = (TypeExpr)(root.getVal());
+        ConstExpr c = (ConstExpr) sin.getVal();
+
+        assertEquals(Ops.SIN, sin.getOp());
+        assertEquals((float) Math.PI, c.getVal());
+    }
+
+    @Test
+    public void TestNegType3(){
+        ArrayList<Token> tokens = Lexer.lex("-(1 + 2)");
+        Parser p = new Parser(tokens);
+        TypeExpr e = (TypeExpr)(p.getExpr());
+        BinExpr bin = (BinExpr) e.getVal();
+        ConstExpr left = (ConstExpr) bin.getLeft();
+        ConstExpr right = (ConstExpr) bin.getRight();
+
+        assertEquals(Ops.ADD, bin.getOp());
+        assertEquals(1, left.getVal());
+        assertEquals(2, right.getVal());
+    }
 }

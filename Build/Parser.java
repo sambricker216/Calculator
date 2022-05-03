@@ -204,6 +204,24 @@ public class Parser {
                 return new TypeExpr(Ops.LOG, val);
             }
         }
+
+        else if(tokenList.get(index).getOp() == Ops.SUB){
+            index++;
+
+            if(index >= tokenList.size()){
+                return null;
+            }
+            else{
+                TypeExpr t = new TypeExpr(Ops.SUB, base());
+
+                if(t.getVal() == null){
+                    return null;
+                }
+                else{
+                    return t;
+                }
+            }
+        }
     
         else{
             Ops op = tokenList.get(index).getOp();
