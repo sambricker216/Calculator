@@ -39,7 +39,7 @@ public class TypeExpr extends Expr{
         }
     }
 
-    public Object visit(Visitor visitor){
+    public Float visit(Visitor visitor){
         return null;
     }
 }

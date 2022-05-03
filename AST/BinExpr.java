@@ -29,7 +29,7 @@ public class BinExpr extends Expr{
         return "Left: " + left.toString() + ", Op: " + op + ", Right: " + right.toString();
     }
 
-    public Object visit(Visitor visitor){
+    public Float visit(Visitor visitor){
         return null;
     }
 

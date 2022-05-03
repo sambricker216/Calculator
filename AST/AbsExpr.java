@@ -17,7 +17,7 @@ public class AbsExpr  extends Expr{
         return "|" + expr.toString() + "|";
     }
 
-    public Object visit(Visitor visitor){
-        return null;
+    public Float visit(Visitor visitor){
+        return visitor.visitAbsExpr(this);
     }
 }

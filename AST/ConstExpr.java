@@ -13,7 +13,7 @@ public class ConstExpr extends Expr{
         return "" + val;
     }
 
-    public Object visit(Visitor visitor){
+    public Float visit(Visitor visitor){
         return null;
     }
 

@@ -91,6 +91,10 @@ public class Parser {
                 index++;
                 return c;
             }
+            case VAR ->{
+                index++;
+                return new VarExpr();
+            }
             case LOG, LN, SIN, COS, TAN, SUB ->{
                 return type();
             }
