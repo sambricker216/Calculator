@@ -9,6 +9,11 @@ public class Visitor {
         return (Float) e.visit(this);
     }
 
+    public Float visit(Expr e){
+        var = 0.0f;
+        return (Float) e.visit(this);
+    }
+
     public Float visitVarExpr(){
         return var;
     }
@@ -65,6 +70,9 @@ public class Visitor {
                 }
                 case MOD ->{
                     f = left % right;
+                    f *= 1000;
+                    int num = Math.round(f);
+                    f = (float) num / 1000f;
                 }
                 case POW ->{
                     f = (float) Math.pow(left, right);
