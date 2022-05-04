@@ -159,4 +159,136 @@ public class VisitorTest {
 
         assertEquals(3.0f, f);
     }
+
+    @Test
+    public void TestSin(){
+        ArrayList<Token> tokens = Lexer.lex("sin(0)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(0.0f, f);
+    }
+
+    @Test
+    public void TestSin2(){
+        ArrayList<Token> tokens = Lexer.lex("sin(90)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(1.0f, f);
+    }
+
+    @Test
+    public void TestCos(){
+        ArrayList<Token> tokens = Lexer.lex("cos(0)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(1.0f, f);
+    }
+
+    @Test
+    public void TestCos2(){
+        ArrayList<Token> tokens = Lexer.lex("cos(90)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(0.0f, f);
+    }
+
+    @Test
+    public void TestTan(){
+        ArrayList<Token> tokens = Lexer.lex("tan(90)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(null, f);
+    }
+
+    @Test
+    public void TestTan1(){
+        ArrayList<Token> tokens = Lexer.lex("tan(0)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(0.0f, f);
+    }
+
+    @Test
+    public void TestTan2(){
+        ArrayList<Token> tokens = Lexer.lex("tan(45)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(1.0f, f);
+    }
+
+    @Test
+    public void TestTan3(){
+        ArrayList<Token> tokens = Lexer.lex("tan(45 + -45)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(0.0f, f);
+    }
+
+    @Test
+    public void TestLN(){
+        ArrayList<Token> tokens = Lexer.lex("ln(e)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(1f, f);
+    }
+
+    @Test
+    public void TestLog(){
+        ArrayList<Token> tokens = Lexer.lex("log(10)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(1f, f);
+    }
+
+    @Test
+    public void TestLog2(){
+        ArrayList<Token> tokens = Lexer.lex("log_(2)(4)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(2f, f);
+    }
+
+    @Test
+    public void TestDiv0(){
+        ArrayList<Token> tokens = Lexer.lex("1/0");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(null, f);
+    }
 }

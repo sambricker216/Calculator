@@ -6,12 +6,31 @@ public class Visitor {
 
     public Float visit(Expr e, float x){
         var = x;
-        return (Float) e.visit(this);
+
+        float f;
+        try{
+            f =  (Float) e.visit(this);
+        }
+        catch(Exception ex){
+            return null;
+        }
+
+        return f;
     }
 
     public Float visit(Expr e){
         var = 0.0f;
-        return (Float) e.visit(this);
+
+        float f;
+        try{
+            f =  (Float) e.visit(this);
+        }
+        catch(Exception ex){
+            return null;
+        }
+        
+
+        return f;
     }
 
     public Float visitVarExpr(){
@@ -67,6 +86,10 @@ public class Visitor {
                 }
                 case DIV ->{
                     f = left / right;
+
+                    if(right == 0.0f){
+                        return null;
+                    }
                 }
                 case MOD ->{
                     f = left % right;
@@ -113,11 +136,20 @@ public class Visitor {
                 }
                 case COS ->{
                     f = (float) Math.cos(Math.toRadians((double) expr));
+                    if(Math.abs(f) < Math.pow(10, -14)){
+                        f = 0.0f;
+                    }
                 }
                 case TAN ->{
                     f = (float) Math.tan(Math.toRadians((double) expr));
+                    if(Math.abs(expr) % 90 == 0 && ((int)(Math.abs(expr)))/90 % 2 == 1 ){
+                        return null;
+                    }
                 }
                 case LN ->{
+                    if(expr == (float) Math.E){
+                        return 1f;
+                    }
                     f = (float) (Math.log(expr)/Math.log(Math.E));
                 }
                 case LOG ->{
@@ -129,7 +161,7 @@ public class Visitor {
                         f = (float) (Math.log(expr)/Math.log(base));
                     }
                     else{
-                        f = (float) Math.log(expr);
+                        f = (float) Math.log10(expr);
                     }
                 }
                 default -> {
