@@ -291,4 +291,90 @@ public class VisitorTest {
 
         assertEquals(null, f);
     }
+
+    @Test
+    public void TestAbs(){
+        ArrayList<Token> tokens = Lexer.lex("|1 - 2|");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(1f, f);
+    }
+
+    @Test
+    public void TestAbs2(){
+        ArrayList<Token> tokens = Lexer.lex("|-1|");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(1f, f);
+    }
+
+    @Test
+    public void TestAbs3(){
+        ArrayList<Token> tokens = Lexer.lex("1 + -(|-2|)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(-1f, f);
+    }
+
+    @Test
+    public void TestAbs4(){
+        ArrayList<Token> tokens = Lexer.lex("|-4 + |3-4||");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(3, f);
+    }
+
+    @Test
+    public void TestVar(){
+        ArrayList<Token> tokens = Lexer.lex("x + 3");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e, 3.1f);
+
+        assertEquals(6.1f, f);
+    }
+
+    @Test
+    public void TestVar2(){
+        ArrayList<Token> tokens = Lexer.lex("3 * sin(x * 90)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e, 0.0f);
+
+        assertEquals(0.0f, f);
+    }
+
+    @Test
+    public void TestVar3(){
+        ArrayList<Token> tokens = Lexer.lex("x^2");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+
+        Float f = v.visit(e, 0.0f);
+        Float f2 = v.visit(e, 1.0f);
+        Float f3= v.visit(e, 2.0f);
+        Float f4 = v.visit(e, 3.0f);
+        Float f5 = v.visit(e, 4.0f);
+
+        assertEquals(0.0f, f);
+        assertEquals(1.0f, f2);
+        assertEquals(4.0f, f3);
+        assertEquals(9.0f, f4);
+        assertEquals(16.0f, f5);
+    }
 }
