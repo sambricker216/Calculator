@@ -7,11 +7,15 @@ public class Visitor {
     public Float visit(Expr e, float x){
         var = x;
 
-        float f;
+        Float f;
         try{
             f =  (Float) e.visit(this);
         }
         catch(Exception ex){
+            return null;
+        }
+
+        if(f.isNaN() || f.isInfinite()){
             return null;
         }
 
@@ -21,14 +25,17 @@ public class Visitor {
     public Float visit(Expr e){
         var = 0.0f;
 
-        float f;
+        Float f;
         try{
             f =  (Float) e.visit(this);
         }
         catch(Exception ex){
             return null;
         }
-        
+
+        if(f.isNaN() || f.isInfinite()){
+            return null;
+        }
 
         return f;
     }
@@ -133,10 +140,13 @@ public class Visitor {
                 }
                 case SIN ->{
                     f = (float) Math.sin(Math.toRadians((double) expr));
+                    if(expr % 180 == 0){
+                        f = 0.0f;
+                    }
                 }
                 case COS ->{
                     f = (float) Math.cos(Math.toRadians((double) expr));
-                    if(Math.abs(f) < Math.pow(10, -14)){
+                    if(expr % 180 == 90){
                         f = 0.0f;
                     }
                 }

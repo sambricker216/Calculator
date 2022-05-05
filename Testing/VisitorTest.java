@@ -443,4 +443,70 @@ public class VisitorTest {
 
         assertEquals((float) Math.sqrt(3), f);
     }
+
+    @Test
+    public void SuperTest(){
+        ArrayList<Token> tokens = Lexer.lex("(3 - (3^(1/2)^2)) + 100.2 - 50.1 * 2 + sin(360)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(0.0f, f);
+    }
+
+    @Test
+    public void SuperTest2(){
+        ArrayList<Token> tokens = Lexer.lex("2 * 14 * 1 ^ 10000");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(28f, f);
+    }
+
+    @Test
+    public void SuperTest3(){
+        ArrayList<Token> tokens = Lexer.lex("ln(e) + log(10 * 10) * log_(1 + 1)(8)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(7f, f);
+    }
+
+    @Test
+    public void ErrorTest(){
+        ArrayList<Token> tokens = Lexer.lex("1/(3-3)");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(null, f);
+    }
+
+    @Test
+    public void ErrorTest2(){
+        ArrayList<Token> tokens = Lexer.lex("-10^45");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(null, f);
+    }
+
+    @Test
+    public void ErrorTest3(){
+        ArrayList<Token> tokens = Lexer.lex("2 + 1^949485950584948384948559605984054955060693");
+        Parser p = new Parser(tokens);
+        Expr e = p.getExpr();
+        Visitor v = new Visitor();
+        Float f = v.visit(e);
+
+        assertEquals(null, f);
+    }
 }
