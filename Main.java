@@ -1,12 +1,16 @@
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.Border;
+import Build.*;
+import AST.*;
 
 public class Main extends JFrame{
     JPanel panel;
     JLabel output;
     JTextField calcEntry;
     JTextField varEntry;
+    JButton calcButton;
 
     public Main(){
         super("Calculator");
@@ -14,16 +18,24 @@ public class Main extends JFrame{
         
         panel = new JPanel();
         panel.setLayout(new GridLayout(3,2));
+        panel.setBackground(Color.LIGHT_GRAY);
 
         calcEntry = new JTextField(15);
+        calcEntry.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
+
         varEntry = new JTextField(5);
+        varEntry.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
+
         output = new JLabel("");
 
-        panel.add(new JLabel("Enter expression here"));
+        calcButton = new JButton("Calculate");
+        calcButton.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
+
+        panel.add(new JLabel("   Enter expression here"));
         panel.add(calcEntry);
-        panel.add(new JLabel("Enter variable value here"));
+        panel.add(new JLabel("   Enter variable value here"));
         panel.add(varEntry);
-        panel.add(new JButton("Calculate"));
+        panel.add(calcButton);
         panel.add(output);
         
         add(panel);
