@@ -32,37 +32,7 @@ public class Main extends JFrame{
 
         calcButton.addActionListener(e ->
         {
-            ArrayList<Token> tList = Lexer.lex(calcEntry.getText());
-            if(tList != null){
-                Parser p = new Parser(tList);
-
-                if(p.getExpr() != null){
-                    Visitor v = new Visitor();
-                    Float f;
-
-                    if(varEntry.getText().length() == 0){
-                        f = v.visit(p.getExpr());
-                    }
-                    else{
-                        f = v.visit(p.getExpr(), Float.parseFloat(varEntry.getText()));
-                    }
-
-                    if(f != null){
-                        output.setText("   " + f.toString());
-                    }
-                    else{
-                        output.setText("   Illegal input");
-                    }
-
-                }
-                else{
-                    output.setText("   Illegal input");
-                }
-
-            }
-            else{
-                output.setText("   Illegal input");
-            }
+           calculate();
         });
 
         panel.add(new JLabel("   Enter expression here"));
@@ -73,6 +43,41 @@ public class Main extends JFrame{
         panel.add(output);
         
         add(panel);
+    }
+
+    private void calculate(){
+        ArrayList<Token> tList = Lexer.lex(calcEntry.getText());
+        if(tList != null){
+            Parser p = new Parser(tList);
+            Expr e = p.getExpr();
+
+            if(e != null){
+                Visitor v = new Visitor();
+                Float f;
+
+                if(varEntry.getText().length() == 0){
+                    f = v.visit(e);
+                }
+                else{
+                    f = v.visit(e, Float.parseFloat(varEntry.getText()));
+                }
+
+                if(f != null){
+                    output.setText("   " + f.toString());
+                }
+                else{
+                    output.setText("   Illegal input");
+                }
+
+            }
+            else{
+                output.setText("   Illegal input");
+            }
+
+        }
+        else{
+            output.setText("   Illegal input");
+        }
     }
 
     public static void main(String[] args) {
