@@ -59,7 +59,29 @@ public class Main extends JFrame{
                     f = v.visit(e);
                 }
                 else{
-                    f = v.visit(e, Float.parseFloat(varEntry.getText()));
+                    Float var;
+
+                    if(varEntry.getText().toLowerCase().equals("pi")){
+                        var = (float) Math.PI;
+                    }
+                    else if(varEntry.getText().toLowerCase().equals("e")){
+                        var = (float) Math.E;
+                    }
+                    else{
+                        try{
+                            var = Float.parseFloat(varEntry.getText());
+                        }
+                        catch(Exception error){
+                            var = null;
+                        }
+                    }
+
+                    if(var == null){
+                        f = null;
+                    }
+                    else{
+                        f = v.visit(e, var);
+                    }
                 }
 
                 if(f != null){
