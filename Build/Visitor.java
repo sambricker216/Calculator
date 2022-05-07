@@ -2,7 +2,7 @@ package Build;
 import AST.*;
 
 public class Visitor {
-    float var;
+    Float var;
 
     public Float visit(Expr e, float x){
         var = x;
@@ -23,7 +23,7 @@ public class Visitor {
     }
 
     public Float visit(Expr e){
-        var = 0.0f;
+        var = null;
 
         Float f;
         try{
