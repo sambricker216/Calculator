@@ -15,7 +15,7 @@ public class Visitor {
             return null;
         }
 
-        if(f.isNaN() || f.isInfinite()){
+        if(f == null || f.isNaN() || f.isInfinite()){
             return null;
         }
 
@@ -33,7 +33,7 @@ public class Visitor {
             return null;
         }
 
-        if(f.isNaN() || f.isInfinite()){
+        if(f == null || f.isNaN() || f.isInfinite()){
             return null;
         }
 

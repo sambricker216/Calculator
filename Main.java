@@ -1,7 +1,6 @@
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import Build.*;
 import AST.*;
 
@@ -30,6 +29,41 @@ public class Main extends JFrame{
 
         calcButton = new JButton("Calculate");
         calcButton.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
+
+        calcButton.addActionListener(e ->
+        {
+            ArrayList<Token> tList = Lexer.lex(calcEntry.getText());
+            if(tList != null){
+                Parser p = new Parser(tList);
+
+                if(p.getExpr() != null){
+                    Visitor v = new Visitor();
+                    Float f;
+
+                    if(varEntry.getText().length() == 0){
+                        f = v.visit(p.getExpr());
+                    }
+                    else{
+                        f = v.visit(p.getExpr(), Float.parseFloat(varEntry.getText()));
+                    }
+
+                    if(f != null){
+                        output.setText("   " + f.toString());
+                    }
+                    else{
+                        output.setText("   Illegal input");
+                    }
+
+                }
+                else{
+                    output.setText("   Illegal input");
+                }
+
+            }
+            else{
+                output.setText("   Illegal input");
+            }
+        });
 
         panel.add(new JLabel("   Enter expression here"));
         panel.add(calcEntry);
