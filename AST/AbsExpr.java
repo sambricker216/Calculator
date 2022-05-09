@@ -1,7 +1,9 @@
 package AST;
 import Build.*;
 
+//Container for abs expressions
 public class AbsExpr  extends Expr{
+    //Holds the nested expression
     Expr expr;
 
     public AbsExpr(Expr e){
@@ -17,6 +19,7 @@ public class AbsExpr  extends Expr{
         return "|" + expr.toString() + "|";
     }
 
+    //Calls the visit in visitor
     public Float visit(Visitor visitor){
         return visitor.visitAbsExpr(this);
     }

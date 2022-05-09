@@ -1,9 +1,15 @@
 package AST;
 import Build.*;
 
+//Container for binary expressions
 public class BinExpr extends Expr{
+    //holds the left side
     Expr left;
+
+    //holds the right side
     Expr right;
+
+    //Holds the op
     Ops op;
 
     public BinExpr(Expr left, Expr right, Ops op){
@@ -29,6 +35,7 @@ public class BinExpr extends Expr{
         return "Left: " + left.toString() + ", Op: " + op + ", Right: " + right.toString();
     }
 
+    //Calls the binExpr visit in the Visitor
     public Float visit(Visitor visitor){
         return visitor.visitBinExpr(this);
     }

@@ -1,7 +1,9 @@
 package AST;
 import Build.*;
 
+//Container for the const
 public class ConstExpr extends Expr{
+    //Holds the constant value as a float
     float val;
 
     public float getVal() {
@@ -13,6 +15,7 @@ public class ConstExpr extends Expr{
         return "" + val;
     }
 
+    //Calls the Const visit in the visitor
     public Float visit(Visitor visitor){
         return visitor.visitConstExpr(this);
     }
