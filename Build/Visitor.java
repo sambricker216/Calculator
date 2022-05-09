@@ -1,20 +1,27 @@
 package Build;
 import AST.*;
 
+//The visitor class navigates through the tree and performs the calculations using a bottom up approach
+//Illegal operations, such as dividing by zero or going outside the range of a float, return null
 public class Visitor {
     Float var;
 
+    //Function call with a variable
     public Float visit(Expr e, float x){
+        //Variable set to appropriate value
         var = x;
 
+        //Try catch for sake of airthmetic exceptions
         Float f;
         try{
+            //Calls visit method from e's class
             f =  (Float) e.visit(this);
         }
         catch(Exception ex){
             return null;
         }
 
+        //Makes sure only valud returns
         if(f == null || f.isNaN() || f.isInfinite()){
             return null;
         }
@@ -22,7 +29,10 @@ public class Visitor {
         return f;
     }
 
+    //Function call no variable
+    //Other than var, handles the same as the other overload
     public Float visit(Expr e){
+        //Assigns null so expression with var also returns null
         var = null;
 
         Float f;
@@ -40,10 +50,12 @@ public class Visitor {
         return f;
     }
 
+    //Returns the value of var, null if it's a no var expression
     public Float visitVarExpr(){
         return var;
     }
 
+    //Abs returns the absolute value of the inner expression
     public Float visitAbsExpr(AbsExpr abs){
         Float f = null;
 
@@ -57,6 +69,7 @@ public class Visitor {
         return f;
     }
 
+    //Const returns the value held by the ConstExpr, these are the numerical values
     public Float visitConstExpr(ConstExpr con){
         Float f = null;
 
@@ -71,6 +84,7 @@ public class Visitor {
     }
 
     public Float visitBinExpr(BinExpr bin){
+        //Binary expressions get right and left hand sides and perform an operation on the two values
         Float left = bin.getLeft().visit(this);
         Float right = bin.getRight().visit(this);
 
@@ -80,6 +94,7 @@ public class Visitor {
 
         Float f = null;
 
+        //Switches through each value
         try{
             switch(bin.getOp()){
                 case ADD ->{
@@ -94,12 +109,14 @@ public class Visitor {
                 case DIV ->{
                     f = left / right;
 
+                    //Some cases divising by zero did not become an error so this has to be manually checked for
                     if(right == 0.0f){
                         return null;
                     }
                 }
                 case MOD ->{
                     f = left % right;
+                    //Extra statements to avoid rounding errors
                     f *= 1000;
                     int num = Math.round(f);
                     f = (float) num / 1000f;
@@ -125,6 +142,7 @@ public class Visitor {
             return null;
         }
 
+        //Gets inside expression
         Float expr = type.getVal().visit(this);
 
         if(expr == null){
@@ -134,6 +152,8 @@ public class Visitor {
         Float f = null;
 
         try{
+            // Switch staements for all the type expressions, trig expression are done in degrees
+            //Trig expresions also have special case handling because of rounding issues
             switch(type.getOp()){
                 case SUB ->{
                     f = expr * -1.0f;
