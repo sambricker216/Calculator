@@ -42,6 +42,9 @@ Using the tree in the example above, the first operations that would be performe
 
 <p> The GUI is done through the Java API JFrame. </p>
 
+<h3> Testing </h3>
+<p> All tests in the Testing folder were done using JUnit. </p>
+
 <h2> Regex and Grammar Rules </h2>
 
 <h3> Regex for Tokens </h3>
