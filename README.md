@@ -31,7 +31,7 @@ The Parser is the second main component of the calculator.
 <h3> Regex for Tokens </h3>
 <ul>
  <li> digit = 0..9 </li>
- <li> number = (digit)* . (digit)* </li>
+ <li> number = (digit)* (. (digit)*)? </li>
  <li> add = + </li>
  <li> sub = - </li>
  <li> mult = * </li>
