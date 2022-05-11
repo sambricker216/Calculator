@@ -78,7 +78,7 @@ Using the tree in the example above, the first operations that would be performe
  <li> multExpr = powExpr ((mult | div | mod) powExpr)* </li>
  <li> powExpr = baseExpr (pow baseExpr)* </li>
  <li> trigExpr = (sin | cos | tan) lp expr rp </li>
- <li> logExpr = ((log | ln) lp expr rp)) | (log base lp expr rp) </li>
+ <li> logExpr = ((log | ln) lp expr rp)) | (log base lp expr rp lp expr rp) </li>
  <li> negExpr = sub baseExpr </li>
  <li> baseExpr =  trigExpr | logExpr | var | pi | e | (lp expr rp) | negExpr | number </li>
 </ul>
